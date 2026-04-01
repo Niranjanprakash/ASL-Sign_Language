@@ -12,6 +12,7 @@ export default function Webcam({ onLandmarks, onNoHand }) {
   const videoRef      = useRef(null);
   const handsRef      = useRef(null);
   const camRef        = useRef(null);
+  // eslint-disable-next-line no-unused-vars
   const frameSkip     = useRef(0);
   const prevLandmarks = useRef(null);  // previous frame landmarks
   const stillCount    = useRef(0);     // consecutive still frame counter

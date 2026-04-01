@@ -17,6 +17,7 @@ function majorityVote(arr) {
   return Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0];
 }
 
+// eslint-disable-next-line no-unused-vars
 const LETTER_NAMES = {
   A:"Ay", B:"Bee", C:"See", D:"Dee", E:"Ee", F:"Ef",
   G:"Jee", H:"Aitch", I:"Eye", J:"Jay", K:"Kay", L:"El",

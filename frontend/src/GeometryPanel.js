@@ -8,6 +8,7 @@ const FINGERTIP_PAIRS = [
 ];
 
 const FINGER_NAMES = ["Thumb", "Index", "Middle", "Ring", "Pinky"];
+// eslint-disable-next-line no-unused-vars
 const ANGLE_JOINT_LABELS = ["Wrist-MCP", "MCP-PIP", "PIP-DIP"];
 
 function normalize(val, max) {
