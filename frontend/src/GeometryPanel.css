@@ -1,0 +1,120 @@
+.geo-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.geo-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.geo-section-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-indigo);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+/* ── Distance rows ── */
+.geo-distances {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.geo-dist-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+}
+
+.geo-pair-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+.geo-bar-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.geo-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+.dist-fill {
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+}
+
+.geo-val {
+  font-size: 0.68rem;
+  font-family: 'Fira Code', monospace;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ── Angle rows ── */
+.geo-angles {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.geo-angle-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 56px;
+  align-items: center;
+  gap: 8px;
+}
+
+.geo-finger-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.angle-fill {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+}
+
+.geo-bend-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-align: right;
+  font-family: 'Fira Code', monospace;
+}
+
+.bend-straight { color: var(--accent-green); }
+.bend-slight   { color: #34d399; }
+.bend-curved   { color: var(--accent-amber); }
+.bend-bent     { color: var(--accent-red); }

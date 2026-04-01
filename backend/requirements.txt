@@ -1,0 +1,11 @@
+flask
+flask-cors
+gunicorn
+torch
+torchvision
+mediapipe
+opencv-python
+numpy
+Pillow
+scikit-learn
+
