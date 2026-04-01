@@ -77,7 +77,7 @@ export default function Prediction({ result, noHand, noSign, backendOk, bufferSt
       <div className="pred-header">
         <div>
           <div className="pred-main-label">Detected Output</div>
-          <div className="pred-letter" style={{ fontSize: isLongText ? "4rem" : "8.5rem" }}>
+          <div className="pred-letter" key={prediction} style={{ fontSize: isLongText ? "3.2rem" : undefined }}>
             {prediction.toUpperCase()}
           </div>
         </div>

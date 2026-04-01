@@ -280,119 +280,120 @@ export default function App() {
           </div>
         </div>
         <div className="header-right">
-          <div className={`status-dot ${backendOk === "online" ? "online" : backendOk === "missing_model" ? "missing" : "offline"}`} />
-          <span className="status-text">
-            {backendOk === null ? "Connecting…"
-              : backendOk === "online" ? "Backend Online"
-              : backendOk === "missing_model" ? "Model Missing (Train First)"
-              : "Backend Offline"}
-          </span>
+          <div className="status-pill">
+            <div className={`status-dot ${backendOk === "online" ? "online" : backendOk === "missing_model" ? "missing" : "offline"}`} />
+            <span className="status-text">
+              {backendOk === null ? "Connecting…"
+                : backendOk === "online" ? "Backend Online"
+                : backendOk === "missing_model" ? "Model Missing"
+                : "Backend Offline"}
+            </span>
+          </div>
           <div className="fps-badge">{fps} FPS</div>
         </div>
       </header>
 
       {/* ── Main content ── */}
       <main className="app-main">
-        {/* Left: webcam + word builder */}
-        <section className="cam-section">
-          <WebcamComponent onLandmarks={handleLandmarks} onNoHand={handleNoHand} />
-          <p className="cam-hint">Hold a stable sign for 0.5s to add · auto-speaks after pause</p>
+        {/* Top row: camera (left) + prediction (right) */}
+        <div className="top-row">
+          <section className="cam-section">
+            <WebcamComponent onLandmarks={handleLandmarks} onNoHand={handleNoHand} />
+            <p className="cam-hint">Hold a stable sign for 0.5s to add · auto-speaks after pause</p>
+          </section>
 
-          {/* ── Word Builder Panel ── */}
-          <div className="word-panel">
-            <div className="word-panel-header">
-              <span className="word-panel-title">📝 Word Builder</span>
-              <div className="word-panel-actions">
-                <button
-                  className={`word-btn speak ${isSpeaking ? "speaking" : ""}`}
-                  onClick={() => speakWord(word)}
-                  disabled={!word.trim()}
-                  title="Speak word"
-                >
-                  {isSpeaking ? "🔊 Speaking…" : "🔊 Speak"}
-                </button>
-                <button
-                  className="word-btn backspace"
-                  onClick={() => { setWord(w => w.slice(0, -1)); playTick(); }}
-                  disabled={!word.length}
-                  title="Delete last letter"
-                >
-                  ⌫
-                </button>
-                <button
-                  className="word-btn clear"
-                  onClick={() => { setWord(""); clearTimeout(autoSpeakRef.current); window.speechSynthesis?.cancel(); setIsSpeaking(false); }}
-                  disabled={!word.length}
-                  title="Clear all"
-                >
-                  ✕ Clear
-                </button>
+          <section className="pred-section">
+            <div className="panel-label">Prediction</div>
+            <Prediction
+              result={result}
+              noHand={noHand}
+              noSign={noSign}
+              backendOk={backendOk}
+              bufferState={bufferState}
+              majorityVote={result?.prediction}
+              geoFeatures={geoFeatures}
+            />
+
+            <div className="info-grid">
+              <div className="info-card">
+                <span className="info-icon"></span>
+                <span className="info-label">Model</span>
+                <span className="info-val">MLP · 93→128→64→29</span>
+              </div>
+              <div className="info-card">
+                <span className="info-icon"></span>
+                <span className="info-label">Features</span>
+                <span className="info-val">63 landmarks + 30 geo = 93</span>
+              </div>
+              <div className="info-card">
+                <span className="info-icon"></span>
+                <span className="info-label">Buffer</span>
+                <span className="info-val">Majority vote · last {BUFFER_SIZE}</span>
+              </div>
+              <div className="info-card">
+                <span className="info-icon"></span>
+                <span className="info-label">Voice</span>
+                <span className="info-val">Auto-speak · 2.5s pause</span>
               </div>
             </div>
+          </section>
+        </div>
 
-            {/* Word display — scrollable, last letter always visible */}
-            <div className="word-display" ref={displayRef}>
-              {word.length > 0
-                ? word.split("").map((ch, i) => (
-                    <span
-                      key={i}
-                      className={`word-char ${ch === " " ? "space-char" : ""} ${i === word.length - 1 && lastAdded ? "just-added" : ""}`}
-                    >
-                      {ch === " " ? "␣" : ch}
-                    </span>
-                  ))
-                : <span className="word-placeholder">Sign letters to build a word…</span>
-              }
-            </div>
-
-            {/* Hold progress bar */}
-            <div className={`hold-bar-wrap ${holdProgress > 0 ? "visible" : ""}`}>
-              <div className="hold-bar-track">
-                <div className="hold-bar-fill" style={{ width: `${holdProgress}%` }} />
-              </div>
-              <span className="hold-bar-label">
-                {holdProgress > 0 ? `Adding "${holdLetter.current?.toUpperCase()}"…` : ""}
-              </span>
+        {/* Word Builder — full width below top row */}
+        <div className="word-panel">
+          <div className="word-panel-header">
+            <span className="word-panel-title">📝 Word Builder</span>
+            <div className="word-panel-actions">
+              <button
+                className={`word-btn speak ${isSpeaking ? "speaking" : ""}`}
+                onClick={() => speakWord(word)}
+                disabled={!word.trim()}
+                title="Speak word"
+              >
+                {isSpeaking ? "🔊 Speaking…" : "🔊 Speak"}
+              </button>
+              <button
+                className="word-btn backspace"
+                onClick={() => { setWord(w => w.slice(0, -1)); playTick(); }}
+                disabled={!word.length}
+                title="Delete last letter"
+              >
+                ⌫
+              </button>
+              <button
+                className="word-btn clear"
+                onClick={() => { setWord(""); clearTimeout(autoSpeakRef.current); window.speechSynthesis?.cancel(); setIsSpeaking(false); }}
+                disabled={!word.length}
+                title="Clear all"
+              >
+                ✕ Clear
+              </button>
             </div>
           </div>
-        </section>
 
-        {/* Right: prediction panel */}
-        <section className="pred-section">
-          <div className="panel-title">Prediction</div>
-          <Prediction
-            result={result}
-            noHand={noHand}
-            noSign={noSign}
-            backendOk={backendOk}
-            bufferState={bufferState}
-            majorityVote={result?.prediction}
-            geoFeatures={geoFeatures}
-          />
-
-          <div className="info-grid">
-            <div className="info-card">
-              <span className="info-icon"></span>
-              <span className="info-label">Model</span>
-              <span className="info-val">MLP · 93→128→64→29</span>
-            </div>
-            <div className="info-card">
-              <span className="info-icon"></span>
-              <span className="info-label">Features</span>
-              <span className="info-val">63 landmarks + 30 geo = 93</span>
-            </div>
-            <div className="info-card">
-              <span className="info-icon"></span>
-              <span className="info-label">Buffer</span>
-              <span className="info-val">Majority vote · last {BUFFER_SIZE}</span>
-            </div>
-            <div className="info-card">
-              <span className="info-icon"></span>
-              <span className="info-label">Voice</span>
-              <span className="info-val">Auto-speak · 2.5s pause</span>
-            </div>
+          <div className="word-display" ref={displayRef}>
+            {word.length > 0
+              ? word.split("").map((ch, i) => (
+                  <span
+                    key={i}
+                    className={`word-char ${ch === " " ? "space-char" : ""} ${i === word.length - 1 && lastAdded ? "just-added" : ""}`}
+                  >
+                    {ch === " " ? "␣" : ch}
+                  </span>
+                ))
+              : <span className="word-placeholder">Sign letters to build a word…</span>
+            }
           </div>
-        </section>
+
+          <div className={`hold-bar-wrap ${holdProgress > 0 ? "visible" : ""}`}>
+            <div className="hold-bar-track">
+              <div className="hold-bar-fill" style={{ width: `${holdProgress}%` }} />
+            </div>
+            <span className="hold-bar-label">
+              {holdProgress > 0 ? `Adding "${holdLetter.current?.toUpperCase()}"…` : ""}
+            </span>
+          </div>
+        </div>
       </main>
 
       <footer className="app-footer">

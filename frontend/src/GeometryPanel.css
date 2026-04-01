@@ -1,55 +1,48 @@
+/* GeometryPanel.css */
+
 .geo-panel {
   background: var(--bg-panel);
   border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  animation: slideUp 0.25s ease;
 }
 
 .geo-title {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 4px;
+  letter-spacing: 0.09em;
+  margin-bottom: 2px;
 }
 
 .geo-section-label {
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   font-weight: 600;
   color: var(--accent-indigo);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
-/* ── Distance rows ── */
-.geo-distances {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+/* Distance rows */
+.geo-distances { display: flex; flex-direction: column; gap: 4px; }
 
 .geo-dist-row {
   display: grid;
-  grid-template-columns: 40px 1fr 38px;
+  grid-template-columns: 38px 1fr 34px;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .geo-pair-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--text-muted);
   font-family: 'Fira Code', monospace;
@@ -57,8 +50,8 @@
 }
 
 .geo-bar-track {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.05);
+  height: 5px;
+  background: rgba(255,255,255,0.05);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -66,37 +59,33 @@
 .geo-bar-fill {
   height: 100%;
   border-radius: 3px;
-  transition: width 0.2s ease;
+  transition: width 0.18s ease;
 }
 
 .dist-fill {
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-  box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 5px rgba(99,102,241,0.35);
 }
 
 .geo-val {
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-family: 'Fira Code', monospace;
   color: var(--text-muted);
   text-align: right;
 }
 
-/* ── Angle rows ── */
-.geo-angles {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+/* Angle rows */
+.geo-angles { display: flex; flex-direction: column; gap: 4px; }
 
 .geo-angle-row {
   display: grid;
-  grid-template-columns: 48px 1fr 56px;
+  grid-template-columns: 44px 1fr 52px;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .geo-finger-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--text-muted);
   white-space: nowrap;
@@ -104,11 +93,11 @@
 
 .angle-fill {
   background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 5px rgba(16,185,129,0.28);
 }
 
 .geo-bend-label {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
   text-align: right;
   font-family: 'Fira Code', monospace;
@@ -118,3 +107,8 @@
 .bend-slight   { color: #34d399; }
 .bend-curved   { color: var(--accent-amber); }
 .bend-bent     { color: var(--accent-red); }
+
+/* Hide on mobile — too cramped */
+@media (max-width: 600px) {
+  .geo-panel { display: none; }
+}

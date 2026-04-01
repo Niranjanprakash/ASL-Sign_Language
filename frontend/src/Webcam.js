@@ -108,17 +108,7 @@ export default function Webcam({ onLandmarks, onNoHand }) {
   }, [onLandmarks, onNoHand]);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: VIDEO_WIDTH,
-        height: VIDEO_HEIGHT,
-        borderRadius: 16,
-        overflow: "hidden",
-        boxShadow: "0 0 40px rgba(0,212,255,0.2)",
-        border: "1px solid rgba(0,212,255,0.2)",
-      }}
-    >
+    <div className="cam-box">
       {/* Status overlay */}
       {status === "loading" && (
         <div className="cam-status">
@@ -143,10 +133,13 @@ export default function Webcam({ onLandmarks, onNoHand }) {
         height={VIDEO_HEIGHT}
         style={{
           display: "block",
-          transform: "scaleX(-1)", // mirror for natural feel
+          transform: "scaleX(-1)",
           width: "100%",
           height: "100%",
           objectFit: "cover",
+          position: "absolute",
+          top: 0,
+          left: 0,
         }}
       />
 
