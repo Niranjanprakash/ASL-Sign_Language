@@ -26,17 +26,26 @@ export default function Overlay({ landmarks, width, height }) {
 
     if (!landmarks || landmarks.length === 0) return;
 
+    // Scale factor: drawing coords are 640×480 but canvas may be rendered smaller
+    const scaleX = width  / (canvas.offsetWidth  || width);
+    const scaleY = height / (canvas.offsetHeight || height);
+    const scale  = Math.min(scaleX, scaleY);          // uniform scale
+    const dotTip  = Math.max(5,  8  / scale);          // fingertip dot radius
+    const dotJoint= Math.max(3.5, 5 / scale);          // joint dot radius
+    const dotCore = Math.max(1.5, 2 / scale);          // white core radius
+    const lineW   = Math.max(3,   4 / scale);          // connection line width
+
     // Convert normalized [0,1] coords → pixel coords
     const pts = landmarks.map((lm) => ({
       x: lm.x * width,
       y: lm.y * height,
     }));
 
-    // Draw connections (indigo glow lines)
-    ctx.strokeStyle = "rgba(99, 102, 241, 0.7)";
-    ctx.lineWidth = 3;
+    // Draw connections
+    ctx.strokeStyle = "rgba(99, 102, 241, 0.75)";
+    ctx.lineWidth = lineW;
     ctx.shadowColor = "rgba(99, 102, 241, 0.5)";
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 10 / scale;
     for (const [a, b] of CONNECTIONS) {
       ctx.beginPath();
       ctx.moveTo(pts[a].x, pts[a].y);
@@ -44,19 +53,18 @@ export default function Overlay({ landmarks, width, height }) {
       ctx.stroke();
     }
 
-    // Draw landmarks (purple/pink dots)
+    // Draw landmarks
     ctx.shadowColor = "rgba(139, 92, 246, 0.8)";
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 12 / scale;
     pts.forEach((pt, i) => {
       const isTip = [4, 8, 12, 16, 20].includes(i);
       ctx.beginPath();
-      ctx.arc(pt.x, pt.y, isTip ? 5 : 3.5, 0, Math.PI * 2);
+      ctx.arc(pt.x, pt.y, isTip ? dotTip : dotJoint, 0, Math.PI * 2);
       ctx.fillStyle = isTip ? "#a78bfa" : "#8b5cf6";
       ctx.fill();
-      
-      // small bright core
+
       ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 1.5, 0, Math.PI * 2);
+      ctx.arc(pt.x, pt.y, dotCore, 0, Math.PI * 2);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
     });
