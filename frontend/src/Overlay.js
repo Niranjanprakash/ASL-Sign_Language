@@ -30,10 +30,10 @@ export default function Overlay({ landmarks, width, height }) {
     const scaleX = width  / (canvas.offsetWidth  || width);
     const scaleY = height / (canvas.offsetHeight || height);
     const scale  = Math.min(scaleX, scaleY);          // uniform scale
-    const dotTip  = Math.max(5,  8  / scale);          // fingertip dot radius
-    const dotJoint= Math.max(3.5, 5 / scale);          // joint dot radius
-    const dotCore = Math.max(1.5, 2 / scale);          // white core radius
-    const lineW   = Math.max(3,   4 / scale);          // connection line width
+    const dotTip  = Math.max(2,  3  / scale);          // fingertip dot radius
+    const dotJoint= Math.max(1.5, 2 / scale);          // joint dot radius
+    const dotCore = Math.max(0.5, 1 / scale);          // white core radius
+    const lineW   = Math.max(1,   1.5 / scale);        // connection line width
 
     // Convert normalized [0,1] coords → pixel coords
     const pts = landmarks.map((lm) => ({
@@ -45,7 +45,7 @@ export default function Overlay({ landmarks, width, height }) {
     ctx.strokeStyle = "rgba(99, 102, 241, 0.75)";
     ctx.lineWidth = lineW;
     ctx.shadowColor = "rgba(99, 102, 241, 0.5)";
-    ctx.shadowBlur = 10 / scale;
+    ctx.shadowBlur = 4 / scale;
     for (const [a, b] of CONNECTIONS) {
       ctx.beginPath();
       ctx.moveTo(pts[a].x, pts[a].y);
@@ -55,7 +55,7 @@ export default function Overlay({ landmarks, width, height }) {
 
     // Draw landmarks
     ctx.shadowColor = "rgba(139, 92, 246, 0.8)";
-    ctx.shadowBlur = 12 / scale;
+    ctx.shadowBlur = 5 / scale;
     pts.forEach((pt, i) => {
       const isTip = [4, 8, 12, 16, 20].includes(i);
       ctx.beginPath();
